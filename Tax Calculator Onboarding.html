@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CQX 1040 — iOS signup flow</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; height: 100%; }
+  body { font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  @keyframes taxCaret { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="screens-tax.jsx"></script>
+
+<script type="text/babel">
+  function Phone({ children }) {
+    return (
+      <IOSDevice width={402} height={874}>
+        <div style={{ height: '100%', paddingTop: 59, boxSizing: 'border-box' }}>
+          {children}
+        </div>
+      </IOSDevice>
+    );
+  }
+
+  function App() {
+    const W = 402, H = 874;
+    const screens = [
+      { id: 'welcome', label: '01 · Welcome',         C: TAX_S_Welcome },
+      { id: 'email',   label: '02 · Email',           C: TAX_S_Email   },
+      { id: 'otp',     label: '03 · Verify',          C: TAX_S_OTP     },
+      { id: 'profile', label: '04 · Identity',        C: TAX_S_Profile },
+      { id: 'filing',  label: '05 · Filing status',   C: TAX_S_Filing  },
+      { id: 'state',   label: '06 · State',           C: TAX_S_State   },
+      { id: 'done',    label: '07 · Account ready',   C: TAX_S_AllSet  },
+    ];
+    return (
+      <DesignCanvas>
+        <DCSection
+          id="signup"
+          title="CQX 1040 — iOS signup"
+          subtitle="7-screen onboarding · navy + amber, IBM Plex"
+        >
+          {screens.map(({ id, label, C }) => (
+            <DCArtboard key={id} id={id} label={label} width={W} height={H}
+              style={{ background: 'transparent', boxShadow: 'none' }}>
+              <Phone><C /></Phone>
+            </DCArtboard>
+          ))}
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
